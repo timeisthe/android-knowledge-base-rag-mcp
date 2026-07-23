@@ -1,36 +1,163 @@
-:root {
-  --vp-c-bg: #fbfcfa;
-  --vp-c-bg-alt: #f4f7f4;
-  --vp-c-bg-soft: #f1f6f2;
+/* ========================================
+ * 四主题系统: green / paper / green-dark / teal-dark
+ * 通过 [data-theme="xxx"] 属性切换
+ * 暗色主题同时加 .dark class 兼容 VitePress 内部
+ * ======================================== */
+
+/* ===== 默认: Green Light ===== */
+:root,
+[data-theme="green"] {
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f7f9f6;
+  --vp-c-bg-soft: #eef3ec;
   --vp-c-brand-1: #16864b;
-  --vp-c-brand-2: #11723f;
+  --vp-c-brand-2: #137a42;
   --vp-c-brand-3: #0d6235;
   --vp-c-brand-soft: rgba(22, 134, 75, 0.12);
-  --vp-c-divider: rgba(22, 68, 41, 0.12);
-  --vp-c-gutter: rgba(22, 68, 41, 0.08);
-  --vp-c-text-1: #17231c;
-  --vp-c-text-2: #58655d;
-  --vp-c-text-3: #7c8880;
+  --vp-c-divider: rgba(22, 134, 75, 0.12);
+  --vp-c-gutter: rgba(22, 134, 75, 0.08);
+  --vp-c-text-1: #1a2e1a;
+  --vp-c-text-2: #4a5a4a;
+  --vp-c-text-3: #7a8a7a;
   --vp-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --vp-font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --vp-layout-max-width: 1480px;
+  /* KnowledgeHome */
+  --kb-ink: #1a2e1a;
+  --kb-muted: #4a5a4a;
+  --kb-line: rgba(22, 134, 75, 0.12);
+  --kb-accent: #16864b;
+  --kb-accent-dark: #137a42;
+  --kb-accent-soft: #eef3ec;
+  --kb-accent-rgb: 22, 134, 75;
+  --kb-deep-bg: #173b28;
+  --kb-deep-text: #75e4a9;
+  --kb-deep-muted: rgba(255, 255, 255, 0.58);
+  --kb-deep-border: rgba(255, 255, 255, 0.12);
+  --kb-overview-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.97), rgba(240, 246, 240, 0.96));
+  --kb-overview-border: rgba(22, 134, 75, 0.15);
+  --kb-overview-glow: rgba(22, 134, 75, 0.15);
+  --kb-overview-shadow: rgba(22, 80, 40, 0.12);
+  --kb-stat-bg: rgba(255, 255, 255, 0.66);
+  --kb-stat-border: rgba(22, 80, 40, 0.09);
+  --kb-pipeline-bg: rgba(255, 255, 255, 0.7);
+  --kb-home-glow-1: rgba(22, 134, 75, 0.08);
+  --kb-home-glow-2: rgba(82, 221, 145, 0.05);
+  --kb-selection: rgba(22, 134, 75, 0.28);
 }
 
-.dark {
-  --vp-c-bg: #101712;
-  --vp-c-bg-alt: #141d17;
-  --vp-c-bg-soft: #18231c;
+/* ===== Paper Light (CPA 纸皮) ===== */
+[data-theme="paper"] {
+  --vp-c-bg: #faf6f0;
+  --vp-c-bg-alt: #f3ede3;
+  --vp-c-bg-soft: #ede5d8;
+  --vp-c-brand-1: #8b7355;
+  --vp-c-brand-2: #756249;
+  --vp-c-brand-3: #605040;
+  --vp-c-brand-soft: rgba(139, 115, 85, 0.12);
+  --vp-c-divider: rgba(96, 80, 64, 0.12);
+  --vp-c-gutter: rgba(96, 80, 64, 0.08);
+  --vp-c-text-1: #2d2620;
+  --vp-c-text-2: #5c5246;
+  --vp-c-text-3: #8a7e6e;
+  --kb-ink: #2d2620;
+  --kb-muted: #5c5246;
+  --kb-line: rgba(96, 80, 64, 0.12);
+  --kb-accent: #8b7355;
+  --kb-accent-dark: #756249;
+  --kb-accent-soft: #f3ede3;
+  --kb-accent-rgb: 139, 115, 85;
+  --kb-deep-bg: #3d322a;
+  --kb-deep-text: #c4a878;
+  --kb-deep-muted: rgba(255, 255, 255, 0.58);
+  --kb-deep-border: rgba(255, 255, 255, 0.12);
+  --kb-overview-bg: linear-gradient(145deg, rgba(255, 252, 247, 0.97), rgba(243, 237, 227, 0.96));
+  --kb-overview-border: rgba(139, 115, 85, 0.15);
+  --kb-overview-glow: rgba(139, 115, 85, 0.15);
+  --kb-overview-shadow: rgba(96, 80, 64, 0.12);
+  --kb-stat-bg: rgba(255, 255, 255, 0.66);
+  --kb-stat-border: rgba(96, 80, 64, 0.09);
+  --kb-pipeline-bg: rgba(255, 255, 255, 0.7);
+  --kb-home-glow-1: rgba(139, 115, 85, 0.08);
+  --kb-home-glow-2: rgba(168, 140, 100, 0.05);
+  --kb-selection: rgba(139, 115, 85, 0.28);
+}
+
+/* ===== Green Dark (原暗色绿) ===== */
+[data-theme="green-dark"] {
+  --vp-c-bg: #0e1410;
+  --vp-c-bg-alt: #131a14;
+  --vp-c-bg-soft: #1a221c;
   --vp-c-brand-1: #52dd91;
-  --vp-c-brand-2: #43cf82;
-  --vp-c-brand-3: #35bc73;
+  --vp-c-brand-2: #3cc97c;
+  --vp-c-brand-3: #2bb566;
   --vp-c-brand-soft: rgba(82, 221, 145, 0.13);
-  --vp-c-divider: rgba(140, 211, 166, 0.12);
-  --vp-c-gutter: rgba(140, 211, 166, 0.08);
-  --vp-c-text-1: #edf7f0;
-  --vp-c-text-2: #a9b8ad;
-  --vp-c-text-3: #7f9185;
+  --vp-c-divider: rgba(82, 221, 145, 0.12);
+  --vp-c-gutter: rgba(82, 221, 145, 0.08);
+  --vp-c-text-1: #e0eee0;
+  --vp-c-text-2: #94a894;
+  --vp-c-text-3: #647064;
+  --kb-ink: #e0eee0;
+  --kb-muted: #94a894;
+  --kb-line: rgba(82, 221, 145, 0.14);
+  --kb-accent: #52dd91;
+  --kb-accent-dark: #75e4a9;
+  --kb-accent-soft: rgba(82, 221, 145, 0.11);
+  --kb-accent-rgb: 82, 221, 145;
+  --kb-deep-bg: #153522;
+  --kb-deep-text: #75e4a9;
+  --kb-deep-muted: rgba(255, 255, 255, 0.58);
+  --kb-deep-border: rgba(255, 255, 255, 0.12);
+  --kb-overview-bg: linear-gradient(145deg, rgba(20, 30, 22, 0.98), rgba(14, 20, 16, 0.98));
+  --kb-overview-border: rgba(82, 221, 145, 0.17);
+  --kb-overview-glow: rgba(82, 221, 145, 0.15);
+  --kb-overview-shadow: rgba(0, 0, 0, 0.3);
+  --kb-stat-bg: rgba(255, 255, 255, 0.035);
+  --kb-stat-border: rgba(82, 221, 145, 0.09);
+  --kb-pipeline-bg: rgba(255, 255, 255, 0.035);
+  --kb-home-glow-1: rgba(82, 221, 145, 0.08);
+  --kb-home-glow-2: rgba(20, 184, 110, 0.05);
+  --kb-selection: rgba(82, 221, 145, 0.28);
 }
 
+/* ===== Teal Dark (sub2api 青色) ===== */
+[data-theme="teal-dark"] {
+  --vp-c-bg: #0a0f1a;
+  --vp-c-bg-alt: #0f1623;
+  --vp-c-bg-soft: #141d2e;
+  --vp-c-brand-1: #2dd4bf;
+  --vp-c-brand-2: #14b8a6;
+  --vp-c-brand-3: #0d9488;
+  --vp-c-brand-soft: rgba(20, 184, 166, 0.13);
+  --vp-c-divider: rgba(45, 212, 191, 0.12);
+  --vp-c-gutter: rgba(45, 212, 191, 0.08);
+  --vp-c-text-1: #e2e8f0;
+  --vp-c-text-2: #94a3b8;
+  --vp-c-text-3: #64748b;
+  --kb-ink: #e2e8f0;
+  --kb-muted: #94a3b8;
+  --kb-line: rgba(45, 212, 191, 0.14);
+  --kb-accent: #2dd4bf;
+  --kb-accent-dark: #5eead4;
+  --kb-accent-soft: rgba(20, 184, 166, 0.11);
+  --kb-accent-rgb: 45, 212, 191;
+  --kb-deep-bg: #0d1922;
+  --kb-deep-text: #5eead4;
+  --kb-deep-muted: rgba(255, 255, 255, 0.58);
+  --kb-deep-border: rgba(255, 255, 255, 0.12);
+  --kb-overview-bg: linear-gradient(145deg, rgba(15, 22, 35, 0.98), rgba(10, 15, 26, 0.98));
+  --kb-overview-border: rgba(45, 212, 191, 0.17);
+  --kb-overview-glow: rgba(45, 212, 191, 0.15);
+  --kb-overview-shadow: rgba(0, 0, 0, 0.3);
+  --kb-stat-bg: rgba(255, 255, 255, 0.035);
+  --kb-stat-border: rgba(45, 212, 191, 0.09);
+  --kb-pipeline-bg: rgba(255, 255, 255, 0.035);
+  --kb-home-glow-1: rgba(20, 184, 166, 0.08);
+  --kb-home-glow-2: rgba(45, 212, 191, 0.05);
+  --kb-selection: rgba(45, 212, 191, 0.28);
+}
+
+/* ===== 通用样式 ===== */
 html {
   scroll-behavior: smooth;
 }
@@ -41,12 +168,13 @@ body {
 }
 
 ::selection {
-  background: rgba(61, 220, 132, 0.28);
+  background: var(--kb-selection);
 }
 
 .VPNav {
   background: color-mix(in srgb, var(--vp-c-bg) 88%, transparent);
   backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .VPNavBarTitle .title {
@@ -65,10 +193,16 @@ body {
   border-radius: 10px;
 }
 
+/* 隐藏 VitePress 内置的明暗切换按钮，用自定义四主题选择器替代 */
+.VPNavBar .toggle-dark,
+.VPNavBar .VPSwitch.VPSwitchAppearance {
+  display: none !important;
+}
+
 .knowledge-home-page .VPContent.is-home {
   background:
-    radial-gradient(circle at 82% 8%, rgba(61, 220, 132, 0.1), transparent 28%),
-    radial-gradient(circle at 13% 20%, rgba(22, 134, 75, 0.055), transparent 26%);
+    radial-gradient(circle at 82% 8%, var(--kb-home-glow-1), transparent 28%),
+    radial-gradient(circle at 13% 20%, var(--kb-home-glow-2), transparent 26%);
   padding-bottom: 0;
 }
 
