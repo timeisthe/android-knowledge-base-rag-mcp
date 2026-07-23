@@ -4,7 +4,7 @@
 
 - Markdown 安全读写。
 - ChromaDB 持久化索引。
-- Qwen3 Sentence Transformers、OpenAI 和本地测试嵌入器。
+- 硅基流动在线 Qwen3、Sentence Transformers 本地 Qwen3 和测试嵌入器。
 - RAG 搜索、CRUD 和批量索引。
 - MCP tools 与 resources。
 
@@ -35,10 +35,16 @@ source .venv/bin/activate
 
 ```zsh
 python -m pip install --upgrade pip
-python -m pip install -e './mcp-server[dev,local-models]'
+python -m pip install -e './mcp-server[dev]'
 ```
 
 `-e` 表示可编辑安装；修改 `mcp-server/src/android_kb_mcp/` 后不需要重新安装。
+
+需要离线运行本地模型时再安装：
+
+```zsh
+python -m pip install -e './mcp-server[dev,local-models]'
+```
 
 ### 4. 创建配置
 
@@ -47,21 +53,24 @@ cp .env.example .env
 open -e .env
 ```
 
-Qwen3 本地语义检索推荐设置：
+硅基流动在线 Qwen3 推荐设置：
 
 ```dotenv
-EMBEDDING_PROVIDER=sentence-transformers
-LOCAL_EMBEDDING_MODEL=Qwen/Qwen3-Embedding-0.6B
-LOCAL_EMBEDDING_CACHE_PATH=.model-cache/huggingface
-LOCAL_EMBEDDING_DEVICE=auto
-LOCAL_EMBEDDING_BATCH_SIZE=8
-HF_HUB_OFFLINE=0
-TRANSFORMERS_OFFLINE=0
+EMBEDDING_PROVIDER=openai
+EMBEDDING_API_KEY=<YOUR_SILICONFLOW_API_KEY>
+OPENAI_BASE_URL=https://api.siliconflow.cn/v1
+OPENAI_EMBEDDING_MODEL=Qwen/Qwen3-Embedding-0.6B
+OPENAI_EMBEDDING_DIMENSIONS=1024
+OPENAI_EMBEDDING_BATCH_SIZE=8
+OPENAI_TIMEOUT_SECONDS=30
+OPENAI_MAX_RETRIES=4
 KNOWLEDGE_BASE_PATH=knowledge-base
 CHROMA_PERSIST_PATH=.chroma
-CHROMA_COLLECTION=android_knowledge_qwen3_06b
+CHROMA_COLLECTION=android_knowledge_siliconflow_qwen3_06b_1024_v1
 MCP_TRANSPORT=stdio
 ```
+
+`EMBEDDING_API_KEY` 优先于 `OPENAI_API_KEY`，用于避免宿主环境变量覆盖项目密钥。不要把真实 Key 提交到 Git 或发送到聊天中。本地模型配置见根目录 [README.md](../README.md#备选qwen3-本地模型)。
 
 ### 5. 建立索引并搜索
 
@@ -74,6 +83,8 @@ MCP_TRANSPORT=stdio
 - `reindex` 同步全部 Markdown 与 ChromaDB。
 - `metadata` 查看文件数与索引数是否一致。
 - `search` 验证嵌入和向量检索链路。
+
+MCP 的创建、更新和章节追加工具会自动重新向量化目标文档；直接编辑 Markdown 或拉取 Git 更新后，需要手动执行 `reindex`。
 
 ### 6. 运行测试
 

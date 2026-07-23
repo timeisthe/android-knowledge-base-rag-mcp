@@ -272,6 +272,64 @@ body {
   color: var(--vp-c-brand-1);
 }
 
+.vp-doc .kb-anchor-offset {
+  display: block;
+  scroll-margin-top: 84px;
+}
+
+.vp-doc .kb-deep-link {
+  background:
+    radial-gradient(circle at 92% 10%, var(--vp-c-brand-soft), transparent 36%),
+    color-mix(in srgb, var(--vp-c-bg-alt) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 24%, var(--vp-c-divider));
+  border-radius: 16px;
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--vp-c-text-1) 8%, transparent);
+  color: var(--vp-c-text-1);
+  display: grid;
+  gap: 6px;
+  margin: 24px 0;
+  padding: 19px 52px 19px 20px;
+  position: relative;
+  text-decoration: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.vp-doc .kb-deep-link::after {
+  color: var(--vp-c-brand-1);
+  content: '→';
+  font-size: 21px;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.vp-doc .kb-deep-link:hover {
+  border-color: color-mix(in srgb, var(--vp-c-brand-1) 52%, transparent);
+  box-shadow: 0 16px 38px color-mix(in srgb, var(--vp-c-text-1) 12%, transparent);
+  color: var(--vp-c-text-1);
+  transform: translateY(-2px);
+}
+
+.vp-doc .kb-deep-link__eyebrow {
+  color: var(--vp-c-brand-1);
+  font-size: 11px;
+  font-weight: 720;
+  letter-spacing: 0.08em;
+}
+
+.vp-doc .kb-deep-link strong {
+  color: var(--vp-c-text-1);
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.vp-doc .kb-deep-link > span:last-child {
+  color: var(--vp-c-text-2);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
 .vp-doc :not(pre) > code {
   background: var(--vp-c-brand-soft);
   border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 12%, transparent);
@@ -287,6 +345,42 @@ body {
   display: table;
   overflow: hidden;
   width: 100%;
+}
+
+.coroutine-deep-dive-page .VPDoc .container > .content,
+.coroutine-deep-dive-page .VPDoc .content-container,
+.coroutine-deep-dive-page .vp-doc {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.coroutine-deep-dive-page .vp-doc table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable;
+  width: max-content;
+  -webkit-overflow-scrolling: touch;
+}
+
+.coroutine-deep-dive-page .vp-doc div[class*='language-'],
+.coroutine-deep-dive-page .vp-doc pre {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.coroutine-deep-dive-page .vp-doc pre {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.coroutine-deep-dive-page .vp-doc p,
+.coroutine-deep-dive-page .vp-doc li {
+  overflow-wrap: anywhere;
 }
 
 .vp-doc tr:nth-child(2n) {
@@ -319,5 +413,10 @@ body {
     overflow-x: auto;
     width: max-content;
     max-width: 100%;
+  }
+
+  .vp-doc .kb-deep-link {
+    border-radius: 14px;
+    padding: 17px 46px 17px 17px;
   }
 }

@@ -110,13 +110,19 @@ ViewRootImpl 发起遍历，核心阶段是 measure、layout、draw。
 
 ## 事件分发
 
-触摸事件从 Activity/Window 进入 ViewGroup，再通过 dispatchTouchEvent、onInterceptTouchEvent、onTouchEvent 决定拦截和消费。
+触摸事件经 ViewRootImpl、DecorView、Activity/Window 进入 ViewGroup，再通过 dispatchTouchEvent、onInterceptTouchEvent、onTouchEvent 决定目标、拦截和消费。子 View 消费 DOWN 后会成为本次手势的 TouchTarget；父容器如果在 MOVE 中途拦截，子 View 会收到 ACTION_CANCEL，后续事件由父容器处理。
 
 滑动冲突的根本是父子容器都可能解释同一手势。解决方案不是机械调用 requestDisallowInterceptTouchEvent，而是明确：
 
 - 哪个方向或阶段由谁拥有手势；
 - 何时从点击判定切换为滑动判定；
 - ACTION_DOWN 到后续事件必须保持一致的目标链。
+
+<a class="kb-deep-link" href="/android-framework/view-system/view-event-dispatch#view-event-dispatch-deep-dive" target="_self">
+  <span class="kb-deep-link__eyebrow">深入阅读 · 源码链路</span>
+  <strong>View 事件分发、触摸目标与滑动冲突</strong>
+  <span>从 TouchTarget、DISALLOW_INTERCEPT、ACTION_CANCEL 展开，并给出外部拦截法和内部拦截法的具体实现。</span>
+</a>
 
 ## 自定义 View
 

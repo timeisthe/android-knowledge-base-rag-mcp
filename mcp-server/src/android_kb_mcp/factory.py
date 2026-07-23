@@ -24,6 +24,10 @@ def build_service(settings: Settings | None = None) -> KnowledgeService:
             model=settings.openai_embedding_model,
             base_url=settings.openai_base_url,
             dimensions=settings.openai_embedding_dimensions,
+            batch_size=settings.openai_embedding_batch_size,
+            timeout_seconds=settings.openai_timeout_seconds,
+            max_retries=settings.openai_max_retries,
+            query_instruction=settings.openai_embedding_query_instruction,
         )
     else:
         embedder = SentenceTransformerEmbeddingProvider(

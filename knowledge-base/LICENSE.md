@@ -26,4 +26,4 @@ Copyright © 2026 timeisthe
 - Android、Google 以及其他组织或产品的名称、徽标和商标；
 - 适用法律不允许由本仓库所有者重新许可的其他材料。
 
-本仓库中的程序源码和项目配置不适用 CC BY-SA 4.0，而是采用仓库根目录 [MIT License](../LICENSE)。
+本仓库中的程序源码和项目配置不适用 CC BY-SA 4.0，而是采用仓库根目录 [MIT License](https://github.com/timeisthe/android-knowledge-base-rag-mcp/blob/main/LICENSE)。

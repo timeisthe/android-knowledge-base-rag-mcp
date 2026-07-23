@@ -11,6 +11,10 @@ from .errors import ConfigurationError
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+DEFAULT_QUERY_INSTRUCTION = (
+    "Given an Android technical interview question, retrieve relevant "
+    "knowledge-base documents that answer the question"
+)
 
 
 def _resolve_repo_path(value: str) -> Path:
@@ -37,6 +41,20 @@ def _positive_int(value: Optional[str], variable_name: str, default: int) -> int
     return parsed if parsed is not None else default
 
 
+def _non_negative_int(
+    value: Optional[str], variable_name: str, default: int
+) -> int:
+    if value is None or not value.strip():
+        return default
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise ConfigurationError(f"{variable_name} 必须是整数") from exc
+    if parsed < 0:
+        raise ConfigurationError(f"{variable_name} 不能小于 0")
+    return parsed
+
+
 @dataclass(frozen=True)
 class Settings:
     knowledge_base_path: Path
@@ -47,6 +65,10 @@ class Settings:
     openai_base_url: Optional[str]
     openai_embedding_model: str
     openai_embedding_dimensions: Optional[int]
+    openai_embedding_batch_size: int
+    openai_timeout_seconds: int
+    openai_max_retries: int
+    openai_embedding_query_instruction: str
     local_embedding_model: str
     local_embedding_cache_path: Path
     local_embedding_device: str
@@ -66,7 +88,11 @@ class Settings:
             ),
             chroma_collection=os.getenv("CHROMA_COLLECTION", "android_knowledge"),
             embedding_provider=os.getenv("EMBEDDING_PROVIDER", "openai").strip().lower(),
-            openai_api_key=os.getenv("OPENAI_API_KEY") or None,
+            openai_api_key=(
+                os.getenv("EMBEDDING_API_KEY")
+                or os.getenv("OPENAI_API_KEY")
+                or None
+            ),
             openai_base_url=os.getenv("OPENAI_BASE_URL") or None,
             openai_embedding_model=os.getenv(
                 "OPENAI_EMBEDDING_MODEL", "text-embedding-3-small"
@@ -75,6 +101,26 @@ class Settings:
                 os.getenv("OPENAI_EMBEDDING_DIMENSIONS"),
                 "OPENAI_EMBEDDING_DIMENSIONS",
             ),
+            openai_embedding_batch_size=_positive_int(
+                os.getenv("OPENAI_EMBEDDING_BATCH_SIZE"),
+                "OPENAI_EMBEDDING_BATCH_SIZE",
+                8,
+            ),
+            openai_timeout_seconds=_positive_int(
+                os.getenv("OPENAI_TIMEOUT_SECONDS"),
+                "OPENAI_TIMEOUT_SECONDS",
+                30,
+            ),
+            openai_max_retries=_non_negative_int(
+                os.getenv("OPENAI_MAX_RETRIES"),
+                "OPENAI_MAX_RETRIES",
+                4,
+            ),
+            openai_embedding_query_instruction=(
+                os.getenv("OPENAI_EMBEDDING_QUERY_INSTRUCTION")
+                or os.getenv("LOCAL_EMBEDDING_QUERY_INSTRUCTION")
+                or DEFAULT_QUERY_INSTRUCTION
+            ).strip(),
             local_embedding_model=os.getenv(
                 "LOCAL_EMBEDDING_MODEL", "Qwen/Qwen3-Embedding-0.6B"
             ).strip(),
@@ -93,8 +139,7 @@ class Settings:
             ),
             local_embedding_query_instruction=os.getenv(
                 "LOCAL_EMBEDDING_QUERY_INSTRUCTION",
-                "Given an Android technical interview question, retrieve relevant "
-                "knowledge-base documents that answer the question",
+                DEFAULT_QUERY_INSTRUCTION,
             ).strip(),
             local_embedding_trust_remote_code=os.getenv(
                 "LOCAL_EMBEDDING_TRUST_REMOTE_CODE", "false"
@@ -119,8 +164,8 @@ class Settings:
             )
         if self.embedding_provider == "openai" and not self.openai_api_key:
             raise ConfigurationError(
-                "生产模式需要 OPENAI_API_KEY；离线演示可显式设置 "
-                "EMBEDDING_PROVIDER=local"
+                "生产模式需要 EMBEDDING_API_KEY 或 OPENAI_API_KEY；"
+                "离线演示可显式设置 EMBEDDING_PROVIDER=local"
             )
         if (
             self.embedding_provider == "sentence-transformers"

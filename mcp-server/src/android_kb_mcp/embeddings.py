@@ -26,33 +26,70 @@ class OpenAIEmbeddingProvider:
         model: str = "text-embedding-3-small",
         base_url: Optional[str] = None,
         dimensions: Optional[int] = None,
+        batch_size: int = 8,
+        timeout_seconds: int = 30,
+        max_retries: int = 4,
+        query_instruction: str = "",
     ):
         if not api_key:
-            raise ConfigurationError("缺少 OPENAI_API_KEY")
+            raise ConfigurationError(
+                "缺少 EMBEDDING_API_KEY 或 OPENAI_API_KEY"
+            )
+        if batch_size <= 0:
+            raise ValueError("batch_size must be positive")
+        if timeout_seconds <= 0:
+            raise ValueError("timeout_seconds must be positive")
+        if max_retries < 0:
+            raise ValueError("max_retries must not be negative")
         from openai import OpenAI
 
-        client_options = {"api_key": api_key}
+        client_options = {
+            "api_key": api_key,
+            "timeout": timeout_seconds,
+            "max_retries": max_retries,
+        }
         if base_url:
             client_options["base_url"] = base_url
         self.client = OpenAI(**client_options)
         self.model = model
         self.dimensions = dimensions
+        self.batch_size = batch_size
+        self.query_instruction = query_instruction.strip()
 
     def embed(self, texts: Sequence[str]) -> List[List[float]]:
         if not texts:
             return []
+        embeddings: List[List[float]] = []
+        for start in range(0, len(texts), self.batch_size):
+            batch = [
+                text if text.strip() else " "
+                for text in texts[start : start + self.batch_size]
+            ]
+            embeddings.extend(self._embed_batch(batch))
+        return embeddings
+
+    def embed_query(self, text: str) -> List[float]:
+        query = text if text.strip() else " "
+        if self.query_instruction:
+            query = f"Instruct: {self.query_instruction}\nQuery:{query}"
+        return self.embed([query])[0]
+
+    def _embed_batch(self, texts: List[str]) -> List[List[float]]:
         request = {
             "model": self.model,
-            "input": [text if text.strip() else " " for text in texts],
+            "input": texts,
             "encoding_format": "float",
         }
         if self.dimensions is not None:
             request["dimensions"] = self.dimensions
         response = self.client.embeddings.create(**request)
-        return [list(item.embedding) for item in sorted(response.data, key=lambda item: item.index)]
-
-    def embed_query(self, text: str) -> List[float]:
-        return self.embed([text])[0]
+        embeddings = [
+            list(item.embedding)
+            for item in sorted(response.data, key=lambda item: item.index)
+        ]
+        if len(embeddings) != len(texts):
+            raise RuntimeError("嵌入服务返回数量与请求数量不一致")
+        return embeddings
 
 
 class SentenceTransformerEmbeddingProvider:

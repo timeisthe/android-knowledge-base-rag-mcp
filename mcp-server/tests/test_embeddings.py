@@ -15,6 +15,10 @@ def test_openai_provider_uses_current_embeddings_api_shape() -> None:
     class FakeEmbeddings:
         def create(self, **kwargs):
             captured.update(kwargs)
+            if len(kwargs["input"]) == 1:
+                return SimpleNamespace(
+                    data=[SimpleNamespace(index=0, embedding=[1.0, 0.0])]
+                )
             return SimpleNamespace(
                 data=[
                     SimpleNamespace(index=1, embedding=[0.0, 1.0]),
@@ -39,6 +43,72 @@ def test_openai_provider_uses_current_embeddings_api_shape() -> None:
     }
     assert result == [[1.0, 0.0], [0.0, 1.0]]
     assert provider.embed_query("Activity") == [1.0, 0.0]
+
+
+def test_openai_provider_batches_inputs_and_adds_query_instruction() -> None:
+    captured = []
+
+    class FakeEmbeddings:
+        def create(self, **kwargs):
+            captured.append(kwargs)
+            return SimpleNamespace(
+                data=[
+                    SimpleNamespace(index=index, embedding=[float(index), 1.0])
+                    for index, _ in enumerate(kwargs["input"])
+                ]
+            )
+
+    provider = OpenAIEmbeddingProvider(
+        api_key="test-key",
+        model="Qwen/Qwen3-Embedding-0.6B",
+        dimensions=1024,
+        batch_size=2,
+        query_instruction="Retrieve Android knowledge",
+    )
+    provider.client = SimpleNamespace(embeddings=FakeEmbeddings())
+
+    result = provider.embed(["one", "two", "three", "four", "five"])
+    query = provider.embed_query("Activity lifecycle")
+
+    assert len(result) == 5
+    assert query == [0.0, 1.0]
+    assert [request["input"] for request in captured] == [
+        ["one", "two"],
+        ["three", "four"],
+        ["five"],
+        [
+            "Instruct: Retrieve Android knowledge\n"
+            "Query:Activity lifecycle"
+        ],
+    ]
+
+
+def test_openai_provider_configures_timeout_and_retries(monkeypatch) -> None:
+    captured = {}
+
+    def fake_openai(**kwargs):
+        captured.update(kwargs)
+        return SimpleNamespace()
+
+    monkeypatch.setitem(
+        sys.modules,
+        "openai",
+        SimpleNamespace(OpenAI=fake_openai),
+    )
+
+    OpenAIEmbeddingProvider(
+        api_key="test-key",
+        base_url="https://api.siliconflow.cn/v1",
+        timeout_seconds=45,
+        max_retries=6,
+    )
+
+    assert captured == {
+        "api_key": "test-key",
+        "base_url": "https://api.siliconflow.cn/v1",
+        "timeout": 45,
+        "max_retries": 6,
+    }
 
 
 def test_sentence_transformer_provider_adds_qwen_query_instruction(
