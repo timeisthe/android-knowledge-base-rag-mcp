@@ -11,7 +11,8 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   head: [
-    ['meta', { name: 'theme-color', content: '#3ddc84' }],
+    ['meta', { name: 'theme-color', content: '#16864b' }],
+    ['meta', { name: 'theme-color', content: '#0a0f1a', media: '(prefers-color-scheme: dark)' }],
   ],
   markdown: {
     lineNumbers: true,
