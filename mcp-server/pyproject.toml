@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "android-kb-mcp"
+version = "1.0.0"
+description = "RAG and MCP server for a local Android interview knowledge base"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "chromadb>=0.5,<2",
+  "mcp>=1.2,<2",
+  "openai>=1.30,<3",
+  "python-dotenv>=1.0,<2",
+  "python-frontmatter>=1.1,<2",
+]
+
+[project.optional-dependencies]
+local-models = [
+  "sentence-transformers>=5,<6",
+]
+dev = [
+  "pytest>=8,<10",
+  "pytest-cov>=5,<8",
+]
+
+[project.scripts]
+android-kb-mcp = "android_kb_mcp.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]

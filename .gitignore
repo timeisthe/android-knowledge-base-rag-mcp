@@ -1,0 +1,15 @@
+node_modules/
+knowledge-base/.vitepress/cache/
+knowledge-base/.vitepress/dist/
+.venv/
+.chroma/
+.model-cache/
+.env
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.DS_Store
+work/

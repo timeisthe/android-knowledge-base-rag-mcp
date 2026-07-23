@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Android">
+  <path fill="#3ddc84" d="M17 22h30v25a5 5 0 0 1-5 5H22a5 5 0 0 1-5-5V22Z"/>
+  <path fill="#3ddc84" d="M20 20c1-7 6-11 12-11s11 4 12 11H20Z"/>
+  <path stroke="#3ddc84" stroke-width="3" stroke-linecap="round" d="m23 10-4-6m22 6 4-6M12 25v19m40-19v19M25 51v9m14-9v9"/>
+  <circle cx="27" cy="15" r="1.5" fill="#113322"/><circle cx="37" cy="15" r="1.5" fill="#113322"/>
+</svg>

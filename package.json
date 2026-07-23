@@ -1,0 +1,15 @@
+{
+  "name": "android-interview-knowledge-base",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev knowledge-base",
+    "docs:build": "vitepress build knowledge-base",
+    "docs:preview": "vitepress preview knowledge-base",
+    "test:mcp": "python3.12 -m pytest mcp-server/tests"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}

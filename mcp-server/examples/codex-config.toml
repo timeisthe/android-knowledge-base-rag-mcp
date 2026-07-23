@@ -1,0 +1,15 @@
+[mcp_servers.android-knowledge-base]
+command = "/ABSOLUTE/PATH/TO/REPOSITORY/.venv/bin/python"
+args = ["-m", "android_kb_mcp"]
+cwd = "/ABSOLUTE/PATH/TO/REPOSITORY"
+
+[mcp_servers.android-knowledge-base.env]
+KNOWLEDGE_BASE_PATH = "/ABSOLUTE/PATH/TO/REPOSITORY/knowledge-base"
+CHROMA_PERSIST_PATH = "/ABSOLUTE/PATH/TO/REPOSITORY/.chroma"
+EMBEDDING_PROVIDER = "sentence-transformers"
+LOCAL_EMBEDDING_MODEL = "Qwen/Qwen3-Embedding-0.6B"
+LOCAL_EMBEDDING_CACHE_PATH = "/ABSOLUTE/PATH/TO/REPOSITORY/.model-cache/huggingface"
+LOCAL_EMBEDDING_DEVICE = "auto"
+LOCAL_EMBEDDING_BATCH_SIZE = "8"
+CHROMA_COLLECTION = "android_knowledge_qwen3_06b"
+MCP_TRANSPORT = "stdio"
