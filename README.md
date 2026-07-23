@@ -64,10 +64,8 @@ flowchart LR
 
 ### 1. 克隆仓库
 
-将地址中的 GitHub 用户名替换为实际仓库所有者：
-
 ```bash
-git clone https://github.com/<YOUR_GITHUB_USERNAME>/android-knowledge-base-rag-mcp.git
+git clone https://github.com/timeisthe/android-knowledge-base-rag-mcp.git
 cd android-knowledge-base-rag-mcp
 ```
 
